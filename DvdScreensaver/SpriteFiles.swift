@@ -7,9 +7,13 @@
 
 import SpriteKit
 import AVFoundation
+import SwiftUI
+import UIKit
 
 public class PongScene: SKScene {
-    
+    @Binding var cloudHeight: CGFloat
+    @Binding var scoreBound: Int
+
     var tocador: AVAudioPlayer?
     
     var ballNode: SKNode
@@ -22,17 +26,32 @@ public class PongScene: SKScene {
     var moveRaquete = CGAffineTransform(translationX: 0, y: 0)
     
     
-    public init(ballNode: SKNode, size: CGSize, raquete: SKNode, nuvem: SKNode) {
+    public init(ballNode: SKNode, size: CGSize, raquete: SKNode, nuvem: SKNode, cloudHeight: Binding<CGFloat>, score: Binding<Int>) {
         self.ballNode = ballNode // pegando os dados da ContentView
         self.raqueteNode = raquete
         self.nuvemNode = nuvem
+        _cloudHeight = cloudHeight
+        _scoreBound = score
         super.init(size: size) // Definido o tamanho da Scene o tamanho dado
         setup()
+        
+
+        
     }
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
+    
+//    public override func didMove(to view: SKView) {
+//        let node = SKSpriteNode(color: UIColor.systemPurple, size: CGSize(width: 50, height: 50))
+//        node.position = CGPoint(x: -200, y: -300)
+//        nuvemNode.addChild(node)
+//
+//            let oscillate = SKAction.oscillation(amplitude: 200, timePeriod: 5, midPoint: node.position)
+//        node.run(SKAction.repeatForever(oscillate))
+//        node.run(SKAction.moveBy(x: size.width, y: 0, duration: 5))
+//        }
     
     private func setup() {
         addChild(ballNode) // colocando os objetos na Scene
@@ -40,10 +59,15 @@ public class PongScene: SKScene {
         addChild(nuvemNode)
         addChild(score)
         
+        
         ballNode.position = CGPoint(x: self.frame.midX, y: self.frame.midY) // definindo a posição inicial
         raqueteNode.position = CGPoint(x: self.frame.midX, y: CGFloat(Int(self.frame.minY)+45))
         score.position = CGPoint(x: self.frame.midX, y: CGFloat(Int(self.frame.maxY)-70))
         nuvemNode.position = CGPoint(x: self.frame.midX, y: self.frame.maxY+(CGFloat(nuvemNode.frame.size.height)/2)) // nessa parte, na declaração do y, a gente tem que usar "CGFloat(nuvemNode.frame.size.height)/2" para corrigir, por a função "position(x:,y:)" sempre usa o midX e midY
+        
+        
+
+     
         
         score.text = "0"
     }
@@ -62,11 +86,11 @@ public class PongScene: SKScene {
         let ballFrame = ballNode.calculateAccumulatedFrame()
         let frameRaquete = raqueteNode.calculateAccumulatedFrame()
         let frameNuvem = nuvemNode.calculateAccumulatedFrame()
-        
         // Update the node's position by applying the transform
         ballNode.position = ballNode.position.applying(moveTransformBall)
         nuvemNode.position = nuvemNode.position.applying(moveTransformNuvem)
-        
+        cloudHeight = nuvemNode.position.y
+
         ballPositionX = ballFrame.midX-15 // Used to determinate de side were the music is coming from
         ballPositionY = ballFrame.midY-15 //Used to determinate the intensity of the music
         
@@ -96,6 +120,7 @@ public class PongScene: SKScene {
                 generator.notificationOccurred(.success) // Default success vibration starts
                 scoreCount += 1
                 score.text = String(scoreCount)
+                scoreBound = scoreCount
             }
         }
         
@@ -159,4 +184,9 @@ public class PongScene: SKScene {
             
         }
     }
+    
+    func waveAnimation() {
+        
+    }
 }
+
