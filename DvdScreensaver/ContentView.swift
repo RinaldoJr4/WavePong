@@ -11,6 +11,8 @@ import SpriteKit
 struct ContentView: View {
     @State var cloudHeight: CGFloat = 0.0
     @State var score: Int = 0
+    @State var toquesNaTela: Int = 0
+    @State var raquetePosition: CGPoint = CGPoint()
     var body: some View {
         
         GeometryReader{
@@ -27,32 +29,37 @@ struct ContentView: View {
 //            WaveForm(color: Color.white, amplify: 140, cloudHeight: self.cloudHeight, isReversed: false)
 //                .frame(height: 6/7 * geo.size.height)
 //                .ignoresSafeArea()
+            ZStack{
+                WaveForm(color: Color.yellow.opacity(0.5), amplify: 70, cloudHeight: self.cloudHeight, isReversed: true)
+                    .frame(height: 6/7 * geo.size.height)
+                    .ignoresSafeArea()
+                
+                WaveForm(color: Color.blue.opacity(0.8), amplify: 140, cloudHeight: self.cloudHeight, isReversed: true)
+                    .frame(height: 6/7 * geo.size.height)
+                    .ignoresSafeArea()
+                
+                
+                WaveForm(color: Color.yellow.opacity(0.5), amplify: 200, cloudHeight: self.cloudHeight, isReversed: false)
+                    .frame(height: 6/7 * geo.size.height)
+                    .ignoresSafeArea()
+                
+                
+                
+                WaveForm(color: Color.purple.opacity(0.9), amplify: 140, cloudHeight: self.cloudHeight, isReversed: false)
+                    .frame(height: 6/7 * geo.size.height)
+                    .ignoresSafeArea()
+            }
             
-            WaveForm(color: Color.yellow.opacity(0.5), amplify: 70, cloudHeight: self.cloudHeight, isReversed: true)
-                .frame(height: 6/7 * geo.size.height)
-                .ignoresSafeArea()
-            
-            WaveForm(color: Color.blue.opacity(0.8), amplify: 140, cloudHeight: self.cloudHeight, isReversed: true)
-                .frame(height: 6/7 * geo.size.height)
-                .ignoresSafeArea()
-            
-            WaveForm(color: Color.yellow.opacity(0.5), amplify: 200, cloudHeight: self.cloudHeight, isReversed: false)
-                .frame(height: 6/7 * geo.size.height)
-                .ignoresSafeArea()
-            
-            
-            
-            WaveForm(color: Color.purple.opacity(0.9), amplify: 140, cloudHeight: self.cloudHeight, isReversed: false)
-                .frame(height: 6/7 * geo.size.height)
-                .ignoresSafeArea()
+           
             VStack(alignment: .center, spacing: 40){
                 Text("Toque a tela com dois dedos para pausar")
                     .font(Font.subheadline)
                     .foregroundColor(Color.white)
                     
-                Text("\(score)")
+                Text("\(score) \n pontos")
                     .font(Font.subheadline)
                     .foregroundColor(Color.white)
+                    
 
                 
                 
@@ -64,7 +71,22 @@ struct ContentView: View {
 
         }
         .ignoresSafeArea()
-        
+//        .simultaneousGesture(
+//    TapGesture()
+//        .onEnded {
+//            toquesNaTela += 1
+//            if toquesNaTela == 2 {
+//                pauseGame()
+//            }
+//        })
+        .highPriorityGesture(DragGesture()
+            .onChanged { value in
+                print("oi")
+                let diferenca = value.translation.width
+                raquetePosition.x = raquetePosition.x + diferenca
+                
+        })
+       
         
     }
 
@@ -79,7 +101,7 @@ struct ContentView: View {
 
 
         
-        let scene = PongScene(ballNode: ballNode, size: viewFrame.size, raquete: raqueteNode, nuvem: nuvemNode, cloudHeight: $cloudHeight, score: $score)
+        let scene = PongScene(ballNode: ballNode, size: viewFrame.size, raquete: raqueteNode, nuvem: nuvemNode, cloudHeight: $cloudHeight, score: $score, raquetePosition: $raquetePosition)
 //        scene.backgroundColor = .darkGray
 //        scene.cloudHeight = $cloudHeight
         return scene
@@ -103,3 +125,52 @@ struct ContentView: View {
 //        return action
 //    }
 //}
+func pauseGame() {
+    print("pausa")
+    //mandar pausar a game scene
+}
+
+
+struct TappableView: UIViewRepresentable
+{
+    var tapCallback: (UITapGestureRecognizer) -> Void
+
+    typealias UIViewType = UIView
+
+    func makeCoordinator() -> TappableView.Coordinator
+    {
+        Coordinator(tapCallback: self.tapCallback)
+    }
+
+    func makeUIView(context: Context) -> UIView
+    {
+        let view = UIView()
+        let doubleTapGestureRecognizer = UITapGestureRecognizer(target: context.coordinator, action: #selector(Coordinator.handleTap(sender:)))
+       
+        /// Set number of touches.
+        doubleTapGestureRecognizer.numberOfTouchesRequired = 2
+       
+        view.addGestureRecognizer(doubleTapGestureRecognizer)
+        return view
+    }
+
+
+    func updateUIView(_ uiView: UIView, context: Context)
+    {
+    }
+
+    class Coordinator
+    {
+        var tapCallback: (UITapGestureRecognizer) -> Void
+
+        init(tapCallback: @escaping (UITapGestureRecognizer) -> Void)
+        {
+            self.tapCallback = tapCallback
+        }
+
+        @objc func handleTap(sender: UITapGestureRecognizer)
+        {
+            self.tapCallback(sender)
+        }
+    }
+}

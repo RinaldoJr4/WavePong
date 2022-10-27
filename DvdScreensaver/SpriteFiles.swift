@@ -13,6 +13,8 @@ import UIKit
 public class PongScene: SKScene {
     @Binding var cloudHeight: CGFloat
     @Binding var scoreBound: Int
+    @Binding var raquetePosition: CGPoint
+
 
     var tocador: AVAudioPlayer?
     
@@ -26,12 +28,13 @@ public class PongScene: SKScene {
     var moveRaquete = CGAffineTransform(translationX: 0, y: 0)
     
     
-    public init(ballNode: SKNode, size: CGSize, raquete: SKNode, nuvem: SKNode, cloudHeight: Binding<CGFloat>, score: Binding<Int>) {
+    public init(ballNode: SKNode, size: CGSize, raquete: SKNode, nuvem: SKNode, cloudHeight: Binding<CGFloat>, score: Binding<Int>, raquetePosition: Binding<CGPoint>) {
         self.ballNode = ballNode // pegando os dados da ContentView
         self.raqueteNode = raquete
         self.nuvemNode = nuvem
         _cloudHeight = cloudHeight
         _scoreBound = score
+        _raquetePosition = raquetePosition
         super.init(size: size) // Definido o tamanho da Scene o tamanho dado
         setup()
         
@@ -62,6 +65,8 @@ public class PongScene: SKScene {
         
         ballNode.position = CGPoint(x: self.frame.midX, y: self.frame.midY) // definindo a posição inicial
         raqueteNode.position = CGPoint(x: self.frame.midX, y: CGFloat(Int(self.frame.minY)+45))
+        let raq = raqueteNode.position
+        raquetePosition = raq
         score.position = CGPoint(x: self.frame.midX, y: CGFloat(Int(self.frame.maxY)-70))
         nuvemNode.position = CGPoint(x: self.frame.midX, y: self.frame.maxY+(CGFloat(nuvemNode.frame.size.height)/2)) // nessa parte, na declaração do y, a gente tem que usar "CGFloat(nuvemNode.frame.size.height)/2" para corrigir, por a função "position(x:,y:)" sempre usa o midX e midY
         
