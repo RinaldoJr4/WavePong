@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BC61F866290AFA2B00D23D3C /* Wave.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC61F865290AFA2B00D23D3C /* Wave.swift */; };
 		D37599622906F45E00BFEB64 /* soundtrack.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D37599612906F45E00BFEB64 /* soundtrack.mp3 */; };
 		D3A6C49429082C07001DC338 /* Relaxing Brown Noise For 10 Minutes - Noise Canceling.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D3A6C49329082C07001DC338 /* Relaxing Brown Noise For 10 Minutes - Noise Canceling.mp3 */; };
 		D3BF927E28FEF6CD00EEF09B /* PongApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BF927D28FEF6CD00EEF09B /* PongApp.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BC61F865290AFA2B00D23D3C /* Wave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wave.swift; sourceTree = "<group>"; };
 		D37599612906F45E00BFEB64 /* soundtrack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = soundtrack.mp3; sourceTree = "<group>"; };
 		D3A6C49329082C07001DC338 /* Relaxing Brown Noise For 10 Minutes - Noise Canceling.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Relaxing Brown Noise For 10 Minutes - Noise Canceling.mp3"; sourceTree = "<group>"; };
 		D3BF927A28FEF6CD00EEF09B /* Pong.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pong.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +64,7 @@
 				D3BF927D28FEF6CD00EEF09B /* PongApp.swift */,
 				D3BF927F28FEF6CD00EEF09B /* ContentView.swift */,
 				D3BF928B28FF26E300EEF09B /* SpriteFiles.swift */,
+				BC61F865290AFA2B00D23D3C /* Wave.swift */,
 				D3BF928128FEF6CF00EEF09B /* Assets.xcassets */,
 				D3BF928328FEF6CF00EEF09B /* Preview Content */,
 			);
@@ -148,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC61F866290AFA2B00D23D3C /* Wave.swift in Sources */,
 				D3BF928028FEF6CD00EEF09B /* ContentView.swift in Sources */,
 				D3BF927E28FEF6CD00EEF09B /* PongApp.swift in Sources */,
 				D3BF928C28FF26E300EEF09B /* SpriteFiles.swift in Sources */,
